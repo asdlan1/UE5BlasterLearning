@@ -48,7 +48,54 @@ void UCombatComponent::EquipPrimaryWeapon(AWeapon* WeaponToEquip)
 //如果有人在后续的测试的时候发现，我敲这个爆头伤害的判定不对啊，怎么打他后背也是爆头，打他侧面也是爆头。反正不从正面打他都是爆头，难不成这个游戏还有隐藏的偷袭机制。
 //没错这都被你发现了。 狗头
 //其实实际是因为，作者在设计的时候，倒带判断伤害的时候，先计算的头部HitBox，把其他部位的HitBox设置无碰撞，这就导致其实实际上的判定是穿过了外部的HitBox直接打中头部了。
-//解决办法有两种，一种是修改头部HitBox的大小不和其他的重叠（诶，怎么头顶尖尖的）。还有一种是修改代码，把判定顺序修改一下，先判定其他部位再判定头部，这样实际打中其他部位的子弹就不会再计算为爆头了。
+//解决办法有两种，一种是修改头部HitBox的大小不和其他的重叠（诶，怎么头顶尖尖的）。还有一种是修改代码，把判定顺序修改一下，根据射击的角度来进行先判定其他部位还是再判定头部，这样实际打中其他部位的子弹就不会再计算为爆头了。代码如下。
+void AProjectileBullet::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+{
+	ABlasterCharacter* OwnerCharacter = Cast<ABlasterCharacter>(GetOwner());
+	if (OwnerCharacter)
+	{
+		ABlasterPlayerController* OwnerController = Cast<ABlasterPlayerController>(OwnerCharacter->Controller);
+		if (OwnerController)
+		{
+			if (OwnerCharacter->HasAuthority() && !bUseServerSideRewind)
+			{
+				const float DamageToCause = Hit.BoneName.ToString() == FString("head") ? HeadShotDamage : Damage;
+
+				UGameplayStatics::ApplyDamage(OtherActor, DamageToCause, OwnerController, this, UDamageType::StaticClass());
+				Super::OnHit(HitComp, OtherActor, OtherComp, NormalImpulse, Hit);
+				return;
+			}
+			ABlasterCharacter* HitCharacter = Cast<ABlasterCharacter>(OtherActor);
+			if (HitCharacter)
+			{
+				FVector CharacterForward = HitCharacter->GetActorForwardVector();
+				FVector CharacterCenter = HitCharacter->GetActorLocation();
+				FVector HitLocation = Hit.Location;
+				CharacterForward.Z = 0.f;
+				CharacterCenter.Z = 0.f;
+				HitLocation.Z = 0.f;
+				FVector TargetDirection = (CharacterCenter - HitLocation).GetSafeNormal();
+				float DotProduct = FVector::DotProduct(CharacterForward, TargetDirection);
+				float Angle = FMath::RadiansToDegrees(FMath::Acos(DotProduct));
+				bool bHitFront = true;
+				if (Angle <= 60.f) bHitFront = false;
+
+				if (bUseServerSideRewind && OwnerCharacter->GetLagCompensation() && OwnerCharacter->IsLocallyControlled())
+				{
+					OwnerCharacter->GetLagCompensation()->ProjectileServerScoreRequest(
+						HitCharacter,
+						TraceStart,
+						InitialVelocity,
+						OwnerController->GetServerTime() - OwnerController->SingleTripTime,
+						bHitFront
+					);
+				}
+			}
+		}
+	}
+	Super::OnHit(HitComp, OtherActor, OtherComp, NormalImpulse, Hit);
+}
+//然后对于服务器倒带进行添加一个bool值进行判断就可以修复子弹伤害判断的问题，当然还有个更简单有效的方法，就是使用两个碰撞通道，区分头部和身体。霰弹枪就可以这样射击，而不是使用角度，不然一帧得判断十次霰弹枪的弹丸，而且还可能击中的不是同一个人想想就可怕。
 //你怎么不像上面似的告诉我咋改啊？因为本菜鸟也是一个初学者，还在苦思冥想我的爆破模式，Blaster的意思也可以翻译为爆破，可这个游戏只有个人、夺旗、团队三种模式。
 //这不就相当于老婆饼里没有老婆，海参炒面没有海参吗？所以我正在设想自己的爆破模式，也是为了制作自己的功能和想法来更好的找工作。我已经实现完了爆破模式的基本功能，再加上一个角色死亡切换到剩余队友视角还没想好怎么实现。
 //不过我毕竟是只小菜鸡，所以实现的功能还是比较菜的没有这个作者这么好。像更高阶的背包通过赚的钱开局买武器之类的功能还在想要不要加，因为还得学习不知道时间够不够。毕竟已经在家学习小半年了。再呆呆都快返祖成山顶洞人了。得准备准备开始找工作了。
