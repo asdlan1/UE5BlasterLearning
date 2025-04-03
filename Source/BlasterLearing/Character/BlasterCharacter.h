@@ -27,7 +27,7 @@ public:
 	virtual void PostInitializeComponents() override;
 
 	/*
-	* ²¥·Å¶¯»­ÃÉÌ«Ææ
+	* æ’­æ”¾åŠ¨ç”»è’™å¤ªå¥‡
 	*/
 	void PlayFireMontage(bool Aiming);
 	void PlayReloadMontage();
@@ -102,12 +102,12 @@ protected:
 
 	UFUNCTION()
 	void ReceiveDamage(AActor* DamageActor, float Damage, const UDamageType* DamageType, class AController* InstigatorController, AActor* DamageCauser);
-	//ÂÖÑ¯»ñÈ¡Ïà¹ØÀà²¢³õÊ¼»¯¶ÔÓ¦µÄHUD
+	//è½®è¯¢è·å–ç›¸å…³ç±»å¹¶åˆå§‹åŒ–å¯¹åº”çš„HUD
 	void PollInit();
 	void RotateInPlace(float DeltaTime);
 
 	/*
-	* Hit Boxes(ÃüÖĞ¿òÓÃÓÚ·şÎñÆ÷µ¹´øÊ±µÄÃüÖĞÅĞ¶Ï)
+	* Hit Boxes(å‘½ä¸­æ¡†ç”¨äºæœåŠ¡å™¨å€’å¸¦æ—¶çš„å‘½ä¸­åˆ¤æ–­)
 	*/
 
 	UPROPERTY(EditAnywhere)
@@ -184,7 +184,7 @@ private:
 	void ServerEquipButtonPressed();
 
 	/*
-	* ½ÇÉ«×é¼ş
+	* è§’è‰²ç»„ä»¶
 	*/
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
@@ -205,7 +205,7 @@ private:
 	void TurnInPlace(float DeltaTime);
 
 	/*
-	* ¶¯»­ÃÉÌ«Ææ
+	* åŠ¨ç”»è’™å¤ªå¥‡
 	*/
 
 	UPROPERTY(EditAnywhere, Category = Combat)
@@ -240,7 +240,7 @@ private:
 	float CalculateSpeed();
 
 	/*
-	* Íæ¼ÒÉúÃüÖµ
+	* ç©å®¶ç”Ÿå‘½å€¼
 	*/
 	UPROPERTY(EditAnywhere, Category = "Player States")
 	float MaxHealth = 100.f;
@@ -252,7 +252,7 @@ private:
 	void OnRep_Health(float LastHealth);
 
 	/*
-	* »¤¶Ü
+	* æŠ¤ç›¾
 	*/
 	UPROPERTY(EditAnywhere, Category = "Player Stats")
 	float MaxShield = 100.f;
@@ -278,7 +278,7 @@ private:
 	bool bLeftGame = false;
 
 	/*
-	* ÈÜ½âĞ§¹û
+	* æº¶è§£æ•ˆæœ
 	*/
 
 	UPROPERTY(VisibleAnywhere)
@@ -292,16 +292,16 @@ private:
 	void UpdateDissolveMaterial(float DissolveValue);
 	void StartDissolve();
 
-	//ÔËĞĞÊ±¸ü¸ÄµÄ¶¯Ì¬²ÄÖÊÊµÀı
+	//è¿è¡Œæ—¶æ›´æ”¹çš„åŠ¨æ€æè´¨å®ä¾‹
 	UPROPERTY(VisibleAnywhere, Category = Elim)
 	UMaterialInstanceDynamic* DynamicDissolveMaterialInstance;
 
-	//½ÇÉ«²ÄÖÊÊµÀı
+	//è§’è‰²æè´¨å®ä¾‹
 	UPROPERTY(VisibleAnywhere, Category = Elim)
 	UMaterialInstance* DissolveMaterialInstance;
 
 	/*
-	* ÍÅ¶ÓÑÕÉ«
+	* å›¢é˜Ÿé¢œè‰²
 	*/
 	UPROPERTY(EditAnywhere, Category = Elim)
 	UMaterialInstance* RedDissolveMathInst;
@@ -319,7 +319,7 @@ private:
 	UMaterialInstance* OriginalMaterial;
 
 	/*
-	* ÌÔÌ­
+	* æ·˜æ±°
 	*/
 	UPROPERTY(EditAnywhere)
 	UParticleSystem* ElimBotEffect;
@@ -340,13 +340,13 @@ private:
 	class UNiagaraComponent* CrownComponent;
 
 	/*
-	* ÊÖÀ×
+	* æ‰‹é›·
 	*/
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* AttachedGrenade;
 
 	/*
-	* Ä¬ÈÏÎäÆ÷
+	* é»˜è®¤æ­¦å™¨
 	*/
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<AWeapon> DefaultWeaponClass;
@@ -378,7 +378,7 @@ public:
 	FORCEINLINE UStaticMeshComponent* GetAttachedGrenade() const { return AttachedGrenade; }
 	FORCEINLINE UBufferComponent* GetBuff() const { return Buff; }
 	FORCEINLINE ULagCompensationComponent* GetLagCompensation() const { return LagCompensation; }
-	FORCEINLINE bool IsHoldingTheFlag() const;
+	bool IsHoldingTheFlag() const;
 	void SetHoldingTheFlag(bool bHolding);
 	ECombatState GetCombatState() const;
 	bool IsLocallyReloading();
