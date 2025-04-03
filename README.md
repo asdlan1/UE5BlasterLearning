@@ -1,7 +1,5 @@
 # UE5BlasterLearning
 
-![Uploading 48930bb92e4fbb6466dcbbe2b418fccd178112301.png…]()
-
 
 
 ```cpp
