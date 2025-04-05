@@ -27,7 +27,7 @@ void ALobbyGameMode::PostLogin(APlayerController* NewPlayer)
 				FString MatchType = Subsystem->DesiredMatchType;
 				if (MatchType == "FreeForAll")
 				{
-					World->ServerTravel(FString("/Game/Maps/BlasterMap?listen"));
+					World->ServerTravel(FString("/Game/Maps/FreeForAll?listen"));
 				}
 				else if (MatchType == "Teams")
 				{
