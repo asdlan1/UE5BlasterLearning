@@ -53,10 +53,9 @@ void UCombatComponent::EquipPrimaryWeapon(AWeapon* WeaponToEquip)
 	...
 }
 
-//如果有人在后续的测试的时候发现，我敲这个爆头伤害的判定不对啊，怎么打他后背也是爆头，打他侧面也是爆头。反正不从正面打他都是爆头，难不成这个游戏还有隐藏的偷袭机制。
-//没错这都被你发现了。 狗头
+//如果有人在后续的测试的时候发现，我敲这个爆头伤害的判定不对啊，怎么打他后背也是爆头，打他侧面也是爆头。反正不从正面打他都是爆头。
 //其实实际是因为，作者在设计的时候，倒带判断伤害的时候，先计算的头部HitBox，把其他部位的HitBox设置无碰撞，这就导致其实实际上的判定是穿过了外部的HitBox直接打中头部了。
-//解决办法有两种，一种是修改头部HitBox的大小不和其他的重叠（诶，怎么头顶尖尖的）。还有一种是修改代码，把判定顺序修改一下，根据射击的角度来进行先判定其他部位还是再判定头部，这样实际打中其他部位的子弹就不会再计算为爆头了。代码如下。
+//解决办法有两种，一种是修改头部HitBox的大小不和其他的重叠。还有一种是修改代码，把判定顺序修改一下，根据射击的角度来进行先判定其他部位还是再判定头部，这样实际打中其他部位的子弹就不会再计算为爆头了。代码如下。
 void AProjectileBullet::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	ABlasterCharacter* OwnerCharacter = Cast<ABlasterCharacter>(GetOwner());
