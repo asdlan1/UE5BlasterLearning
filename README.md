@@ -99,4 +99,4 @@ void AProjectileBullet::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 	Super::OnHit(HitComp, OtherActor, OtherComp, NormalImpulse, Hit);
 }
 ```
-#### 文档文件是我学习后对蓝图和代码分别最后做的一些总结，蓝图有点乱，代码从头到尾都按照我的理解进行了注释。如果大家不介意我的肤浅理解和语言表达能力，有需要可以看一看，如果有帮到你理解，我也不胜荣幸哈哈，不过我肯定无法保证理解的全都正确，Sorry Sorrry。
+#### 文档文件是我学习后对蓝图和代码分别最后做的一些总结，蓝图有点乱，代码从头到尾都按照我的理解进行了注释。如果不介意我的肤浅理解和语言表达能力，有需要可以看一看，如果有帮到你理解，我也不胜荣幸哈哈，不过我肯定无法保证理解的全都正确，Sorry Sorrry。
